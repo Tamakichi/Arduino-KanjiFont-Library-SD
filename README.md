@@ -13,8 +13,11 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 - UTF-8形式の文字の利用が可能です。
 - フォントデータはSDカード(SPI接続)に格納しています。
 - フォントデータの格納形式として２つの形式を提供します。  
-  - 横並び形式  
+  - 横並び形式(デフォルト)  
+    <img src="img/type1.PNG" width="200">  
   - 縦並び形式（モノクログラフィック液晶用)  
+    <img src="img/type2.PNG" width="200">  
+  ※ 赤い数値はバイトデータの並び順  
 
 ## 利用環境
 - Arduino Unoまたはその互換機
@@ -46,6 +49,8 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 |24x24         |X11R6フォント    |6877          |
 
 ## インストール
+* /liblary/sdfonts フォルダをArduinoのliblaryにコピーする。  
+* /fontbin フォルダ内の FONT.BIN、FONTLCD.BIN  SDカードの直下に入れる。
 
 ## ライブラリリファレンス
 ライブラリはオブジェクトとして実装しています。 
@@ -67,7 +72,7 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
     #define  EXFONT12   2    // 12ドット東雲フォント
     #define  EXFONT14   3    // 14ドット東雲フォント
     #define  EXFONT16   4    // 16ドット東雲フォント
-    #define  EXFONT20   5    // 20ドットJiskanフォント
+    #define  EXFONT20   5    // 20ドットkappa20フォント
     #define  EXFONT24   6    // 24ドットXフォント
 
 

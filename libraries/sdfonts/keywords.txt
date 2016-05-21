@@ -1,0 +1,42 @@
+#######################################
+# Syntax Coloring Map For sdfonts
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+SDfonts	KEYWORD1
+sdfonts	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+charUFT8toUTF16	KEYWORD2
+Utf8ToUtf16	KEYWORD2
+init	KEYWORD2
+setLCDMode	KEYWORD2
+setFontSizeAsIndex	KEYWORD2
+getFontSizeIndex	KEYWORD2
+setFontSize	KEYWORD2
+getFontSize	KEYWORD2
+getFontData	KEYWORD2
+getRowLength	KEYWORD2
+getWidth	KEYWORD2 
+getHeight	KEYWORD2
+getLength	KEYWORD2
+open	KEYWORD2
+close	KEYWORD2
+getCode	KEYWORD2
+#######################################
+# Constants (LITERAL1)
+#######################################
+EXFONT8	LITERAL1
+EXFONT10	LITERAL1
+EXFONT12	LITERAL1
+EXFONT14	LITERAL1
+EXFONT16	LITERAL1
+EXFONT20	LITERAL1
+EXFONT24	LITERAL1
+EXFONTNUM	LITERAL1
+FULL_OFST	LITERAL1  
+MAXFONTLEN	LITERAL1
+MAXSIZETYPE	LITERAL1

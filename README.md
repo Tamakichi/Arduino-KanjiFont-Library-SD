@@ -88,20 +88,20 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
   csにはCSピン番号を指定します。  
   
 - グラフィック液晶モードの設定    
-  `void setLCDMode(bool flg)`  
+  `void setLCDMode(bool flg)`    
   フォントデータの並びを指定します。
   flg: 0 通常モード 、1 グラフィック液晶モード  
 
 - フォントファイルのオープン  
-  `bool open(void)`  
+  `bool open(void)`   
   フォントファイルをオープンして読み取り可能状態にします。  
 
 - フォントファイルのクローズ  
-  `void close(void)`
+  `void close(void)`  
   フォントファイルをクローズしてリソースを返却します。    
 
 - 利用サイズを番号で設定  
-  `void setFontSizeAsIndex(uint8_t sz)`  
+  `void setFontSizeAsIndex(uint8_t sz)`   
   使用するフォントをサイズ番号（0～6）で指定します。  
 
 - 現在利用フォントサイズ番号の取得  
@@ -109,41 +109,57 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
   使用しているフォントサイズをサイズ番号（0～6）で取得します。  
 
 - 利用サイズ(ドット数)の設定  
-  `void setFontSize(uint8_t sz)`  
+  `void setFontSize(uint8_t sz)`   
   使用するフォントをサイズ（8,10,12,14,16,20,24）で指定します。  
   上記以外の数字を指定した場合、近い数字のフォントが割り当てられます。  
 
 - 現在利用フォントサイズ(ドット数)の取得  
-  `uint8_t getFontSize()`
+  `uint8_t getFontSize()`  
   使用しているフォントをサイズ（8,10,12,14,16,20,24）で取得します。  
 
 - 指定したUTF16コードに該当するフォントデータの取得  
-  `boolean getFontData(byte* fontdata,uint16_t utf16)`
+  `boolean getFontData(byte* fontdata,uint16_t utf16)`  
   utf16に指定したUTF16フォントコードに該当するフォントデータを取得し、fontdataに格納します。  
   戻り値として、正常時はtrue、異常時はfalseを返します。  
   
 - 指定したUTF8文字列の先頭のフォントデータの取得  
-  `char* getFontData(byte* fontdata,char *pUTF8)`
+  `char* getFontData(byte* fontdata,char *pUTF8)`  
   pUTF8で指定したUTF-8形式の文字列の先頭文字に対応するフォントデータをfontdataに返します。  
   戻り値として、次の文字位置を返します。文字列の終了(\0)に達した場合は、*pUTF8にはそのポインタが返されます。  
   変換に失敗した場合はNULLを返します。  
 
 - 横のバイト数取得  
   `uint8_t getRowLength()`  
+  横一列を構成するために必要なバイト数を返します。  
 
 - 現在利用フォントの幅(ドット数)の取得  
   `uint8_t getWidth()`  
+  直前にロードしたフォントデータのフォント幅(ドット数)を返します。  
 
 - 現在利用フォントの高さ(ドット数)の取得  
   `uint8_t getHeight()`  
+  直前にロードしたフォントデータのフォント高さ(ドット数)を返します。  
 
 - 現在利用フォントのデータサイズ(バイト)の取得  
   `uint8_t getLength()`  
+  直前にロードしたフォントデータのバイト数を返します。  
 
-- 直前に処理した文字コード(utf16)の取得  
+- 直前にロードした文字コード(utf16)の取得  
   `uint16_t getCode()`  
+  直前にロードしたフォントの文字コード(utf16)を返します。
 
+**メンバー関数一覧**  
+- UTF8文字(1～3バイト)をUTF16に変換する   
+  `static uint8_t sdfonts::charUFT8toUTF16(uint16_t *pUTF16,char *pUTF8 )`    
+  pUTF8で指定したUTF8文字をUTF16文字に変換しpUTF16に格納します。  
+  戻り値として、変換処理したUTF8文字バイト数、0の場合は変換失敗を返します。   
 
+- UTF8文字列をUTF16文字列に変換する  
+  `static uint8_t sdfonts::Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8)`  
+  pUTF8で指定したUTF8文字列をUTF16文字列に変換しpUTF16に格納します。  
+  戻り値として、UFT16文字長さ (変換失敗時は-1を返す)を返します。  
+  
+  
 ## サンプルソースの解説
 
 ## ライセンス・使用条件

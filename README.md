@@ -147,7 +147,7 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
   `uint16_t getCode()`  
   直前にロードしたフォントの文字コード(utf16)を返します。
 
-**メンバー関数一覧**  
+**クラスメンバー関数一覧**  
 - UTF8文字(1～3バイト)をUTF16に変換する   
   `static uint8_t sdfonts::charUFT8toUTF16(uint16_t *pUTF16,char *pUTF8 )`    
   pUTF8で指定したUTF8文字をUTF16文字に変換しpUTF16に格納します。  

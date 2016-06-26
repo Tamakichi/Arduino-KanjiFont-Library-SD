@@ -3,6 +3,7 @@
 // 作成 2016/05/13 by たま吉さん
 // 修正 2016/05/16 by たま吉さん, インスタンスをグローバル変数化
 // 修正 2016/05/19 by たま吉さん, グラフィック液晶用フォントモードの追加(setLCDMode()関数追加)
+// 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
 //
 
 #ifndef ___sdfonts_h___
@@ -80,7 +81,7 @@ class sdfonts {
   private:
     void setFontNo(uint8_t fno);                           // 利用フォント種類の設定 fno : フォント種別番号 (0-13)
     uint8_t getFontNo();                                   // 現在の利用フォント種類の取得
-    int16_t read_code(uint16_t pos);                       // ROM上検索テーブルのフォントコードを取得する
+    uint16_t read_code(uint16_t pos);                      // ROM上検索テーブルのフォントコードを取得する
     int16_t findcode(uint16_t  ucode);                     // UTF16コードに該当するテーブル上のフォントコードを取得する
     uint16_t hkana2kana(uint16_t ucode);                   // 半角カナ全角変換 JISX0208 -> UTF16の不整合対応
     uint16_t hkana2uhkana(uint16_t ucode);                 // UTF半角カナ半角utf16コード変換 JISX0208 -> UTF16の不整合対応

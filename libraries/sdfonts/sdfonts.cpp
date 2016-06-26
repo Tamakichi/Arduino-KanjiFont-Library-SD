@@ -5,16 +5,20 @@
 // 修正 2016/05/16 by Tamakichi インスタンスをグローバル変数化、不具合対応
 // 修正 2016/05/17 by Tamakichi fontfile_read()をブロック読み込みに修正
 // 修正 2016/05/19 by たま吉さん, グラフィック液晶用フォントモードの追加(setLCDMode()関数追加)
+// 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
 
 //
-#define MYDEBUG 1 
-#define USE_CON 1
+#define MYDEBUG 0 
+#define USE_CON 0
  
 #include "sdfonts.h"
-#include <avr/pgmspace.h>
+#if defined(ARDUINO_ARCH_AVR)
+  #include <avr/pgmspace.h>
+#endif
+
 
 #define SD_CS_PIN 10              // SDカード CSピン
-#define FONTFILE  "FONT.BIN"      // フォントファイル名
+#define FONTFILE   "FONT.BIN"     // フォントファイル名
 #define FONT_LFILE "FONTLCD.BIN"  // グラフィック液晶用フォントファイル名
 
 #define OFSET_IDXA  0
@@ -208,13 +212,13 @@ bool sdfonts::fontfile_read(uint32_t pos, uint8_t* dt, uint8_t sz) {
 // フォントコード取得
 // ファイル上検索テーブルのフォントコードを取得する
 // pos(in) フォントコード取得位置
-// 戻り値 該当コード or -1 (該当なし)
+// 戻り値 該当コード or 0xFFFF (該当なし)
 //
-int16_t sdfonts::read_code(uint16_t pos) {
+uint16_t sdfonts::read_code(uint16_t pos) {
   uint8_t rcv[2];
   uint32_t addr = cnvAddres(OFSET_IDXA, _fontNo) + pos+pos;
   if (!fontfile_read(addr, rcv, 2))  
-    return -1;
+    return 0xFFFF;
   return  (rcv[0]<<8)+rcv[1]; 
 }
 
@@ -229,12 +233,15 @@ int16_t sdfonts::findcode(uint16_t  ucode) {
    uint16_t  e_p = (((uint16_t)pgm_read_byte(_finfo+_fontNo*RCDSIZ+OFSET_FNUM))<<8) 
                   + pgm_read_byte(_finfo+_fontNo*RCDSIZ+OFSET_FNUM+1) -1;   //  検索範囲下限
    uint16_t  pos;
-   int16_t  d = 0;
+   uint16_t  d = 0;
    int8_t flg_stop = -1;
  
  while(true) {
     pos = t_p + ((e_p - t_p+1)>>1);
-    d = read_code (pos);  
+    d = read_code (pos);
+    if (d==0xFFFF)
+      return -1;  
+ 	
    if (d == ucode) {
      // 等しい
      flg_stop = 1;

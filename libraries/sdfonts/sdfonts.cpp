@@ -6,7 +6,7 @@
 // 修正 2016/05/17 by Tamakichi fontfile_read()をブロック読み込みに修正
 // 修正 2016/05/19 by たま吉さん, グラフィック液晶用フォントモードの追加(setLCDMode()関数追加)
 // 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
-
+// 2016/12/15 findcode()の不具合対応(flg_stopの初期値を-1から0に訂正)
 //
 #define MYDEBUG 0 
 #define USE_CON 0
@@ -234,7 +234,7 @@ int16_t sdfonts::findcode(uint16_t  ucode) {
                   + pgm_read_byte(_finfo+_fontNo*RCDSIZ+OFSET_FNUM+1) -1;   //  検索範囲下限
    uint16_t  pos;
    uint16_t  d = 0;
-   int8_t flg_stop = -1;
+   int8_t flg_stop = 0;
  
  while(true) {
     pos = t_p + ((e_p - t_p+1)>>1);

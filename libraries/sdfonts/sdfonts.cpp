@@ -6,8 +6,10 @@
 // 修正 2016/05/17 by Tamakichi fontfile_read()をブロック読み込みに修正
 // 修正 2016/05/19 by たま吉さん, グラフィック液晶用フォントモードの追加(setLCDMode()関数追加)
 // 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
-// 2016/12/15 findcode()の不具合対応(flg_stopの初期値を-1から0に訂正)
+// 修正 2016/12/15 by たま吉さん, findcode()の不具合対応(flg_stopの初期値を-1から0に訂正)
+// 修正 2017/03/22 by たま吉さん, getFontData()の不具合対応(0x3000以下の全角文字が取得できなかった)
 //
+
 #define MYDEBUG 0 
 #define USE_CON 0
  
@@ -282,7 +284,7 @@ boolean sdfonts::getFontData(byte* fontdata, uint16_t utf16) {
   }
   
  // 文字コードから全角、半角を判定する
- if (utf16 < 0x3000) {
+ if (utf16 < 0x100) {
      switch (utf16) {
        case 0x5C:
        case 0xA2:
@@ -345,17 +347,16 @@ char* sdfonts::getFontData(byte* fontdata,char *pUTF8) {
 //   戻り値: true 正常終了１, false 異常終了
 //
 boolean sdfonts::getFontDataByUTF16(byte* fontdata, uint16_t utf16) {  
-  uint32_t code;
+  int16_t code;
   uint32_t addr;
   uint8_t bnum;
-  byte n;
  
   code = findcode(utf16);
   if ( 0 > code)  
     return false;       // 該当するフォントが存在しない
     
   bnum = pgm_read_byte(_finfo+_fontNo*RCDSIZ+OFSET_BNUM);
-  addr = cnvAddres(OFSET_DATA, _fontNo ) + code * (uint32_t)bnum;
+  addr = cnvAddres(OFSET_DATA, _fontNo ) + (uint32_t)code * (uint32_t)bnum;
   return fontfile_read(addr, fontdata, bnum );
 }
 

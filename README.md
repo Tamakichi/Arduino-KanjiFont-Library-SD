@@ -4,10 +4,16 @@
 このライブラリはArduino用の漢字フォントドライバーライブラリです。  
 SDカードに格納したフォントデータを逐次参照し、UTF-8コードに対応する漢字フォントデータの取得を可能にします。 
 
+
+
 ## ライブラリ名称
+
 **sdfonts** (ヘッダーファイル sdfonts.h)
 
+
+
 ## 特徴
+
 - フォントのサイズとして8,10,12,14,16,20,24の7種類をサポートします。
 - UTF-8形式の文字の利用が可能です。
 - フォントデータはSDカード(SPI接続)に格納しています。
@@ -18,15 +24,24 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
     <img src="img/type2.PNG" width="200">  
   ※ 赤い数値はバイトデータの並び順  
 
+
+
 ## 利用環境
-- Arduino Unoまたはその互換機
+
+- Arduino Unoまたはその互換機、Arduino STM32対応のマイコンボード（BluePill等）
 - 開発環境 Arduino IDE 1.6.5以降
-- SPI接続、SDライブラリによるSDカードの利用ができること
+- SPI接続、SDライブラリまたはSdfatライブラリによるSDカードの利用ができること
+
+
 
 ## ハードウェア構成(例)  
-   <img src="img/hard.jpg" width="300">  
+
+   <img src="img/hard.jpg" width="300">  <img src="img/tft.jpg" width="300">
+
+
 
 ## サポートするフォントの詳細
+
 半角および、全角日本語ひらがな、カタカタ、漢字、英語アルファベット、ギリシャ文字,記号
 半角カタカナはサポートしていません。半角カタカナのコードを指定した場合、全角カタカナに置き換えます。  
 
@@ -47,11 +62,17 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 |24x12         |X11R6半角フォント|221           |
 |24x24         |X11R6フォント    |6877          |
 
+
+
 ## インストール
+
 * /liblary/sdfonts フォルダをArduinoのliblaryにコピーする。  
 * /fontbin フォルダ内の FONT.BIN、FONTLCD.BIN  SDカードの直下に入れる。
 
+
+
 ## ライブラリリファレンス
+
 ライブラリはオブジェクトとして実装しています。 
 グローバルオブジェクト **SDfonts**のメンバー関数を呼び出すことにより、  
 機能利用することが出来ます。  
@@ -59,20 +80,66 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 **ヘッダファイル**  
    `#include <sdfonts.h>`
 
+
+
+**SDカード用ライブラリの選択**
+デフォルトでは、SDカードからのデータ取得にArduino標準の**SDライブラリ**（ヘッダファイル SD.h）を  
+利用しますが、sdfontsConfig.h の**SDFONTS_USE_SDFAT**の設定により、**Sdfatライブラリ**の利用が可能です。  
+
+**sdfontsConfig.h**  
+
+```c++
+// SDカード用ライブラリの選択
+#define SDFONTS_USE_SDFAT   1 // 0:SDライブラリ利用, 1:SdFatライブラリ利用
+
+// Sdfat利用時 SPI速度
+#define SDFONTS_SPI_SPEED SD_SCK_MHZ(18)
+```
+
+また、**Sdfatライブラリ**利用の際、**SDFONTS_SPI_SPEED**の設定にてSPIのクロック速度の設定が可能です。  
+
+
+Sdfatライブラリを利用する場合は、Sdfatのグローバルオブジェクト変数SDを定義する必要があります。  
+以下にArduino STM32環境にてBluePillボードを利用した場合の例を示します。  
+
+```C++
+//
+// ※SdFatを使う場合は、sdfontsConfig.hのSDFONTS_USE_SDFATに1を設定し、
+//   SdFatまたは、SdFatEX型のグローバルオブジェクトSDを用意すること
+//
+
+// 利用するSDオブジェクトの定義
+#define MY_SPIPORT  2   // SPIポートの指定 1:SPI ,2:SPI2
+#if SDFONTS_USE_SDFAT == 1
+  #include <SdFat.h>
+  #if ENABLE_EXTENDED_TRANSFER_CLASS == 1
+    SdFatEX  SD(MY_SPIPORT);
+  #else
+    SdFat    SD(MY_SPIPORT);  
+  #endif
+#else
+  #include <SD.h>
+#endif
+```
+
+
+
 **定数一覧**  
 
-    #define EXFONTNUM  14    // 登録フォント数
-    #define FULL_OFST   7    // フォントサイズから全角フォント種類変換用オフセット値
-    #define MAXFONTLEN  72   // 最大フォントバイトサイズ(=24x24フォント)
-    #define MAXSIZETYPE 7    // フォントサイズの種類数
-    // フォントサイズ
-    #define  EXFONT8    0    // 8ドット美咲フォント
-    #define  EXFONT10   1    // 10ドット nagaフォント
-    #define  EXFONT12   2    // 12ドット東雲フォント
-    #define  EXFONT14   3    // 14ドット東雲フォント
-    #define  EXFONT16   4    // 16ドット東雲フォント
-    #define  EXFONT20   5    // 20ドットkappa20フォント
-    #define  EXFONT24   6    // 24ドットXフォント
+```c++
+#define EXFONTNUM  14    // 登録フォント数
+#define FULL_OFST   7    // フォントサイズから全角フォント種類変換用オフセット値
+#define MAXFONTLEN  72   // 最大フォントバイトサイズ(=24x24フォント)
+#define MAXSIZETYPE 7    // フォントサイズの種類数
+// フォントサイズ
+#define  EXFONT8    0    // 8ドット美咲フォント
+#define  EXFONT10   1    // 10ドット nagaフォント
+#define  EXFONT12   2    // 12ドット東雲フォント
+#define  EXFONT14   3    // 14ドット東雲フォント
+#define  EXFONT16   4    // 16ドット東雲フォント
+#define  EXFONT20   5    // 20ドットkappa20フォント
+#define  EXFONT24   6    // 24ドットXフォント
+```
 
 
 **グローバルオブジェクト**  
@@ -158,8 +225,12 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
   
   
 ## サンプルソースの解説
+
 sample1,sample2ともシリアルコンソールにフォントパターンを出力する簡単なプログラムです。  
-(2つともほとんど同じ内容です)  
+(2つともほとんど同じ内容です)    
+test_sdfontsTFT_STM32は、Arduino STM32環境にてBluePillボード用のプログラムです。  
+グラフィックTFT（Adafruit_ILI9341）に「吾輩は猫である」のテキストを表示すます。  
+
 
 ## ライセンス・使用条件
 フォントライブラリのプログラム部に関しては製作者本人に帰属しますが、自由に利用下さい。

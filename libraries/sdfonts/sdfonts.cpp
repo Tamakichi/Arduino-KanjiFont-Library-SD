@@ -8,6 +8,7 @@
 // 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
 // 修正 2016/12/15 by たま吉さん, findcode()の不具合対応(flg_stopの初期値を-1から0に訂正)
 // 修正 2017/03/22 by たま吉さん, getFontData()の不具合対応(0x3000以下の全角文字が取得できなかった)
+// 修正 2018/07/10 by たま吉さん, sdfat対応,Utf8ToUtf16()の戻り値型をint16_tに修正
 //
 
 #define MYDEBUG 0 
@@ -67,8 +68,13 @@ uint32_t sdfonts::cnvAddres(uint8_t pos, uint8_t ln) {
 
 // 初期化
 bool sdfonts::init(uint8_t cs) {
-    _CSpin = cs;
-    return SD.begin(_CSpin);    
+  _CSpin = cs;
+  //return SD.begin(_CSpin);
+#if SDFONTS_USE_SDFAT == 1
+  return _mSD.begin(_CSpin, SDFONTS_SPI_SPEED);
+#else
+  return _mSD.begin(_CSpin);
+#endif  
 }
 
 // グラフィック液晶モードの設定
@@ -163,9 +169,9 @@ uint16_t sdfonts::hkana2uhkana(uint16_t ucode) {
 //
 bool sdfonts::open() {
   if (_lcdmode)
-	fontFile = SD.open(FONT_LFILE, FILE_READ);
+	fontFile = _mSD.open(FONT_LFILE, FILE_READ);
   else	
-	fontFile = SD.open(FONTFILE, FILE_READ);
+	fontFile = _mSD.open(FONTFILE, FILE_READ);
 	
 	
   if (!fontFile) {
@@ -404,7 +410,7 @@ uint8_t sdfonts::charUFT8toUTF16(uint16_t *pUTF16, char *pUTF8) {
 // pUTF8(in):   UTF8文字列
 // 戻り値: UFT16文字長さ (変換失敗時は-1を返す)
 //
-uint8_t sdfonts::Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8) {
+int16_t sdfonts::Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8) {
   int len = 0;
   int n;
   uint16_t wstr;
@@ -424,5 +430,7 @@ uint8_t sdfonts::Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8) {
 //
 // グローバルオブジェクトの宣言
 //
-
-sdfonts SDfonts;
+#if SDFONTS_USE_SDFAT == 1
+  extern MYSDCLASS SD;
+#endif
+sdfonts SDfonts(SD);

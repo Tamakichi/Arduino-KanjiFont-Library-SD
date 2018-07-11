@@ -4,14 +4,28 @@
 // 修正 2016/05/16 by たま吉さん, インスタンスをグローバル変数化
 // 修正 2016/05/19 by たま吉さん, グラフィック液晶用フォントモードの追加(setLCDMode()関数追加)
 // 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
+// 修正 2018/07/10 by たま吉さん, sdfat対応,Utf8ToUtf16()の戻り値型をint16_tに修正
 //
 
 #ifndef ___sdfonts_h___
 #define ___sdfonts_h___
 
+#include "sdfontsConfig.h"
+#include <Arduino.h>
 #include <SPI.h>
-#include <SD.h>
-#include <arduino.h>
+
+#if SDFONTS_USE_SDFAT == 1
+  #include <SdFat.h>
+  #if ENABLE_EXTENDED_TRANSFER_CLASS == 1
+    #define MYSDCLASS SdFatEX
+  #else
+    #define MYSDCLASS SdFat
+  #endif
+#else
+  #include <SD.h>
+  #define MYSDCLASS SDClass
+#endif
+
 
 #define EXFONTNUM  14    // 登録フォント数
 #define FULL_OFST   7    // フォントサイズから全角フォント種類変換用オフセット値
@@ -44,26 +58,32 @@ class sdfonts {
     uint8_t   _fontSize;    // 利用フォントサイズ
     uint8_t   _CSpin;       // SDカードCSピン
     uint16_t  _code;        // 直前に処理した文字コード(utf16)
-    bool	  _lcdmode;     // グラフィック液晶モード
-    File	  fontFile;     // ファイル操作オブジェクト
+    bool	    _lcdmode;     // グラフィック液晶モード
+    MYSDCLASS &_mSD;        // SDオブジェクトの参照
+    File	    fontFile;     // ファイル操作オブジェクト
+    
 
   // クラスメンバー関数
   public:  
     static uint8_t charUFT8toUTF16(uint16_t *pUTF16,char *pUTF8 );   // UTF8文字(1～3バイト)をUTF16に変換する
-    static uint8_t Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8);       // UTF8文字列をUTF16文字列に変換す
+    static int16_t Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8);       // UTF8文字列をUTF16文字列に変換す
     
   // メンバー関数
   public:
-    sdfonts() {
-      _fontSize = EXFONT8;
+#if SDFONTS_USE_SDFAT == 1
+  sdfonts(MYSDCLASS& rsd) : _mSD(rsd) {
+  #else
+  sdfonts(MYSDCLASS& rsd = SD) : _mSD(rsd) {
+#endif
+    _fontSize = EXFONT8;
       _fontNo   = EXFONT8+FULL_OFST;
       _code     = 0;
-      _lcdmode  = false;	
+      _lcdmode  = false;
     };
     
     bool init(uint8_t cs)  ;                               // 初期化
-	void setLCDMode(bool flg);                             // グラフィック液晶モードの設定
-	void setFontSizeAsIndex(uint8_t sz);                   // 利用サイズを番号で設定
+	  void setLCDMode(bool flg);                             // グラフィック液晶モードの設定
+	  void setFontSizeAsIndex(uint8_t sz);                   // 利用サイズを番号で設定
     uint8_t getFontSizeIndex();                            // 現在利用フォントサイズの番号取得      
     void setFontSize(uint8_t sz);                          // 利用サイズの設定
     uint8_t getFontSize();                                 // 現在利用フォントサイズの取得      

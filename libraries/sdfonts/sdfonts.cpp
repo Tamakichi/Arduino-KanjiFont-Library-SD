@@ -9,6 +9,7 @@
 // 修正 2016/12/15 by たま吉さん, findcode()の不具合対応(flg_stopの初期値を-1から0に訂正)
 // 修正 2017/03/22 by たま吉さん, getFontData()の不具合対応(0x3000以下の全角文字が取得できなかった)
 // 修正 2018/07/10 by たま吉さん, sdfat対応,Utf8ToUtf16()の戻り値型をint16_tに修正
+// 修正 2018/10/29 by たま吉さん, sdfat利用時のグローバルオブジェクトSDの実装ミス対応
 //
 
 #define MYDEBUG 0 
@@ -431,6 +432,6 @@ int16_t sdfonts::Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8) {
 // グローバルオブジェクトの宣言
 //
 #if SDFONTS_USE_SDFAT == 1
-  extern MYSDCLASS SD;
+MYSDCLASS SD;
 #endif
 sdfonts SDfonts(SD);

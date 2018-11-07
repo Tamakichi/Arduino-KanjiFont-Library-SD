@@ -1,5 +1,6 @@
 // フォントライブラリ利用サンプル
 // 作成 2016/05/16 by Tamakichi
+// 修正 2018/11/07 by Tamakichi,Serailインスタンスの接続待ち追加
 //
 
 #include <sdfonts.h>
@@ -45,17 +46,23 @@ void fontdisp2(uint8_t* buf) {
 void fontDump(char* pUTF8, uint8_t sz) {
   uint8_t buf[MAXFONTLEN]; // フォントデータ格納アドレス(最大24x24/8 = 72バイト)
 
-  SDfonts.open();                                   // フォントのオープン
+  SDfonts.open();   // フォントのオープン
   SDfonts.setFontSize(sz);                          // フォントサイズの設定
   while ( pUTF8 = SDfonts.getFontData(buf, pUTF8) ) // フォントの取得
-    fontdisp2(buf);                                 // フォントパターンの表示
+    fontdisp2(buf);                                  // フォントパターンの表示
   SDfonts.close();                                  // フォントのクローズ
 }
 
 void setup() {
   Serial.begin(115200);                   // シリアル通信の初期化
-  SDfonts.init(10);                        // フォント管理の初期化
+  while(!Serial);
   Serial.println(F("sdfonts liblary"));
+ 
+  // フォント管理の初期化
+  if(!SDfonts.init(10)) {                
+    Serial.println(F("sdfonts init error"));
+    exit(1);
+  }
 
   fontDump("色は",16);
   fontDump("にほえど",20);

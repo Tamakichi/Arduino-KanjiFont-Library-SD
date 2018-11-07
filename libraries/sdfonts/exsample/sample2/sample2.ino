@@ -1,5 +1,6 @@
 // フォントライブラリ利用サンプル
 // 作成 2016/05/16 by Tamakichi
+// 修正 2018/11/07 by Tamakichi,Serailインスタンスの接続待ち追加
 //
 
 #include <sdfonts.h>
@@ -104,9 +105,11 @@ void test2(char* pUTF8) {
 void setup() {
   char *pUTF8 = "ABＡｱｲｳｴｵ１２Ａ＼￠￡§¨￢°±´¶×÷埼玉さいたま";
   Serial.begin(115200);                   // シリアル通信の初期化
+  while(!Serial);
+  Serial.println(F("sdfonts liblary"));
+
   SDfonts.init(10);                        // フォント管理の初期化
 
-  Serial.println(F("sdfonts liblary"));
   test1(pUTF8);
   //test2(pUTF8);
   

@@ -5,6 +5,7 @@
 // 修正 2016/05/19 by たま吉さん, グラフィック液晶用フォントモードの追加(setLCDMode()関数追加)
 // 修正 2016/06/26 by たま吉さん, ESP8266対応(ARDUINO_ARCH_AVRの判定追加),read_code()の不具合対応
 // 修正 2018/07/10 by たま吉さん, sdfat対応,Utf8ToUtf16()の戻り値型をint16_tに修正
+// 修正 2020/01/31 by たま吉さん, ESP32対応
 //
 
 #ifndef ___sdfonts_h___
@@ -22,8 +23,13 @@
     #define MYSDCLASS SdFat
   #endif
 #else
-  #include <SD.h>
-  #define MYSDCLASS SDClass
+  #if defined(ARDUINO_ARCH_ESP32)
+    #include <SD.h>
+    #define MYSDCLASS SDFS
+  #else
+    #include <SD.h>
+    #define MYSDCLASS SDClass
+  #endif
 #endif
 
 

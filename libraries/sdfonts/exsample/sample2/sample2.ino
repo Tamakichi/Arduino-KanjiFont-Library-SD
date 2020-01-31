@@ -1,11 +1,16 @@
 // フォントライブラリ利用サンプル
 // 作成 2016/05/16 by Tamakichi
 // 修正 2018/11/07 by Tamakichi,Serailインスタンスの接続待ち追加
+// 修正 2020/01/31 by Tamakichi,ESP32対応
 //
 
 #include <sdfonts.h>
 
-//sdfonts ft;  // フォント管理オブジェクト
+#if defined(ARDUINO_ARCH_ESP32)
+  #define SD_CS 4
+#else
+  #define SD_CS 10
+#endif
 
 // ビットパターン表示
 // d: 8ビットパターンデータ
@@ -96,7 +101,7 @@ void test2(char* pUTF8) {
   for (uint8_t i=0; i < MAXSIZETYPE; i++) {
     str = pUTF8; 
     SDfonts.setFontSizeAsIndex(i);                 // フォントサイズを種類番号で設定(0:8ドット～ 6:24ドット)
-    while ( str = SDfonts.getFontData(buf, str) )  // フォントの取得
+    while ( (str = SDfonts.getFontData(buf, str)) )  // フォントの取得
       fontdisp2(buf);                              // フォントパターンの表示
   }
   SDfonts.close();                                 // フォントのクローズ
@@ -108,7 +113,7 @@ void setup() {
   while(!Serial);
   Serial.println(F("sdfonts liblary"));
 
-  SDfonts.init(10);                        // フォント管理の初期化
+  SDfonts.init(SD_CS);                    // フォント管理の初期化
 
   test1(pUTF8);
   //test2(pUTF8);
@@ -117,4 +122,3 @@ void setup() {
 
 void loop() {
 }
-

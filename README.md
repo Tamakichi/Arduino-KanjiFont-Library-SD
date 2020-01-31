@@ -1,16 +1,13 @@
 # Arduino用漢字フォントライブラリ SDカード版
 
 ## 概要
+
 このライブラリはArduino用の漢字フォントドライバーライブラリです。  
 SDカードに格納したフォントデータを逐次参照し、UTF-8コードに対応する漢字フォントデータの取得を可能にします。 
-
-
 
 ## ライブラリ名称
 
 **sdfonts** (ヘッダーファイル sdfonts.h)
-
-
 
 ## 特徴
 
@@ -24,21 +21,15 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
     <img src="img/type2.PNG" width="200">  
   ※ 赤い数値はバイトデータの並び順  
 
-
-
 ## 利用環境
 
-- Arduino Unoまたはその互換機、Arduino STM32対応のマイコンボード（BluePill等）
+- Arduino Unoその互換機、Arduino STM32対応のマイコンボード（BluePill等）、ESP32、ESP8226マイコンボード
 - 開発環境 Arduino IDE 1.6.5以降
 - SPI接続、SDライブラリまたはSdfatライブラリによるSDカードの利用ができること
-
-
 
 ## ハードウェア構成(例)  
 
    <img src="img/hard.jpg" width="300">  <img src="img/tft.jpg" width="300">
-
-
 
 ## サポートするフォントの詳細
 
@@ -62,14 +53,10 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 |24x12         |X11R6半角フォント|221           |
 |24x24         |X11R6フォント    |6877          |
 
-
-
 ## インストール
 
 * /liblary/sdfonts フォルダをArduinoのliblaryにコピーする。  
 * /fontbin フォルダ内の FONT.BIN、FONTLCD.BIN  SDカードの直下に入れる。
-
-
 
 ## ライブラリリファレンス
 
@@ -80,12 +67,10 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 **ヘッダファイル**  
    `#include <sdfonts.h>` 
 
-
-
 **SDカード用ライブラリの選択**  
 デフォルトでは、SDカードからのデータ取得にArduino標準の**SDライブラリ**（ヘッダファイル SD.h）を利用しますが、sdfontsConfig.h の**SDFONTS_USE_SDFAT**の設定により、**Sdfatライブラリ**の利用が可能です。  
 
-**sdfontsConfig.h**  
+**sdfontsConfig.h** 
 
 ```c++
 // SDカード用ライブラリの選択
@@ -96,7 +81,6 @@ SDカードに格納したフォントデータを逐次参照し、UTF-8コー�
 ```
 
 また、**Sdfatライブラリ**利用の際、**SDFONTS_SPI_SPEED**の設定にてSPIのクロック速度の設定が可能です。  
-
 
 Sdfatライブラリを利用する場合は、Sdfatのグローバルオブジェクト変数SDを定義する必要があります。  
 以下にArduino STM32環境にてBluePillボードを利用した場合の例を示します。  
@@ -121,8 +105,6 @@ Sdfatライブラリを利用する場合は、Sdfatのグローバルオブジ�
 #endif
 ```
 
-
-
 **定数一覧**  
 
 ```c++
@@ -140,11 +122,11 @@ Sdfatライブラリを利用する場合は、Sdfatのグローバルオブジ�
 #define  EXFONT24   6    // 24ドットXフォント
 ```
 
-
 **グローバルオブジェクト**  
 `extern sdfonts SDfonts;`
 
 **メンバー関数一覧**  
+
 - 初期化  
   `bool init(uint8_t cs)`  
   フォント利用のための初期設定を行います。  
@@ -221,15 +203,14 @@ Sdfatライブラリを利用する場合は、Sdfatのグローバルオブジ�
   `static uint8_t sdfonts::Utf8ToUtf16(uint16_t* pUTF16, char *pUTF8)`  
   pUTF8で指定したUTF8文字列をUTF16文字列に変換しpUTF16に格納します。  
   戻り値として、UFT16文字長さ (変換失敗時は-1を返す)を返します。  
-  
-  
+
+
 ## サンプルソースの解説
 
 sample1,sample2ともシリアルコンソールにフォントパターンを出力する簡単なプログラムです。  
 (2つともほとんど同じ内容です)    
 test_sdfontsTFT_STM32は、Arduino STM32環境にてBluePillボード用のプログラムです。  
 グラフィックTFT（Adafruit_ILI9341）に「吾輩は猫である」のテキストを表示すます。  
-
 
 ## ライセンス・使用条件
 フォントライブラリのプログラム部に関しては製作者本人に帰属しますが、自由に利用下さい。
@@ -268,8 +249,3 @@ test_sdfontsTFT_STM32は、Arduino STM32環境にてBluePillボード用のプ�
 
 再配布については、本構成のままであれば自由とします。  
 フォントファイルのみの配布は禁止します。  
-
-
-
-
-

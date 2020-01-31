@@ -10,6 +10,7 @@
 // 修正 2017/03/22 by たま吉さん, getFontData()の不具合対応(0x3000以下の全角文字が取得できなかった)
 // 修正 2018/07/10 by たま吉さん, sdfat対応,Utf8ToUtf16()の戻り値型をint16_tに修正
 // 修正 2018/10/29 by たま吉さん, sdfat利用時のグローバルオブジェクトSDの実装ミス対応
+// 修正 2020/01/31 by たま吉さん, ESP32対応
 //
 
 #define MYDEBUG 0 
@@ -22,8 +23,14 @@
 
 
 #define SD_CS_PIN 10              // SDカード CSピン
-#define FONTFILE   "FONT.BIN"     // フォントファイル名
-#define FONT_LFILE "FONTLCD.BIN"  // グラフィック液晶用フォントファイル名
+
+#if defined(ARDUINO_ARCH_ESP32)
+  #define FONTFILE   "/FONT.BIN"     // フォントファイル名
+  #define FONT_LFILE "/FONTLCD.BIN"  // グラフィック液晶用フォントファイル名
+#else
+  #define FONTFILE   "FONT.BIN"      // フォントファイル名
+  #define FONT_LFILE "FONTLCD.BIN"   // グラフィック液晶用フォントファイル名
+#endif
 
 #define OFSET_IDXA  0
 #define OFSET_DATA  3

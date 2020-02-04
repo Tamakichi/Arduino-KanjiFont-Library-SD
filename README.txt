@@ -1,59 +1,59 @@
-UTF16�}���`�t�H���g�t�@�C��(�o�C�i��) font.bin�Afontlcd.bin�ɂ���
+UTF16マルチフォントファイル(バイナリ) font.bin、fontlcd.binについて
 
-�h�L�������g�쐬�� 2016�N4��18��
-�h�L�������g�X�V�� 2016�N5��21��
+ドキュメント作成日 2016年4月18日
+ドキュメント更新日 2020年2月04日
 
-�����      :���܋g����
-�����HP    :http://nuneno.cocolog-nifty.com
+製作者      :たま吉さん
+製作者HP    :http://nuneno.cocolog-nifty.com
 
-exfont.bin�Afontlcd.bin��7��ނ̓��{��r�b�g�}�b�v�t�H���g��
-�o�C�i���t�@�C���`���Ŋi�[�����t�H���g�t�@�C���ł��B
-���L�̃t�H���g�����^���Ă��܂��B
+exfont.bin、fontlcd.binは7種類の日本語ビットマップフォントを
+バイナリファイル形式で格納したフォントファイルです。
+下記のフォントを収録しています。
 
-�z�z�t�@�C�� exfontbin.zip�̓��e
- README.txt   �{�h�L�������g
- exfont.bin   �t�H���g�t�@�C���{��
- u_table.h    Arduino���C�u���� exfont�p�t�H���g�e�[�u���\���̃\�[�X
- knj10-1.1\   �i�K10�t�H���g
+配布ファイル exfontbin.zipの内容
+ README.txt   本ドキュメント
+ exfont.bin   フォントファイル本体
+ u_table.h    Arduinoライブラリ exfont用フォントテーブル構造体ソース
+ knj10-1.1\   ナガ10フォント
 
-exfont�����^�t�H���g
- �E 8�h�b�g�t�H���g
-    ����t�H���g [�t���[�i���R�ȁj�\�t�g�E�G�A]
+exfont内収録フォント
+ ・ 8ドットフォント
+    美咲フォント [フリー（自由な）ソフトウエア]
     http://www.geocities.jp/littlimi/misaki.htm
-    ���C�Z���X�Ɋւ���L�� http://www.geocities.jp/littlimi/font.htm#license
+    ライセンスに関する記載 http://www.geocities.jp/littlimi/font.htm#license
 
- �E 10�h�b�g�t�H���g
-    �i�K10(1.1):[�Ǝ����C�Z���X]
+ ・ 10ドットフォント
+    ナガ10(1.1):[独自ライセンス]
 
     http://hp.vector.co.jp/authors/VA013391/fonts/#naga10
 
 
-    ���C�Z���X�Ɋւ���L�� \knj10-1.1\README
+    ライセンスに関する記載 \knj10-1.1\README
 
- �E12/14/16�h�b�g�t�H���g
-    ���_�t�H���g(0.9.6):[public domain]
+ ・12/14/16ドットフォント
+    東雲フォント(0.9.6):[public domain]
  
    http://openlab.ring.gr.jp/efont/shinonome/index.html.ja
-    ���C�Z���X�Ɋւ���L�� ��HP
+    ライセンスに関する記載 同HP
 
- �E20�h�b�g�t�H���g
+ ・20ドットフォント
     Kappa 20dot fonts(0.3):[public domain]
  
-   http://kappa.allnet.ne.jp/20dot.fonts/(�����N�؂�)
+   http://kappa.allnet.ne.jp/20dot.fonts/(リンク切れ)
 
- �E24�h�b�g�t�H���g
-  X11R6�����̃t�H���g:[(�ʏ�)X11���C�Z���X]
+ ・24ドットフォント
+  X11R6同梱のフォント:[(通称)X11ライセンス]
  
    http://www.x.org
 
 
-�{�t�@�C���͏�L�t�H���g�̓񎟉��H�t�@�C���̂��߁A���C�Z���X�ɂ��͂Ă�
-�g�p�t�H���g�̃��C�Z���X�ɏ]�����̂Ƃ��܂��B
-�g�p���Ă���i�K10�ɂ��ď��p���p�Ɋւ��鐧��L�ڂ����邽��
-�{�o�C�i���t�@�C�����l����є�c���ړI�ł̗��p�݂̂Ƃ��܂��B
+本ファイルは上記フォントの二次加工ファイルのため、ライセンスについはては
+使用フォントのライセンスに従うものとします。
+使用しているナガ10について商用利用に関する制約記載があるため
+本バイナリファイルも個人および非営利目的での利用のみとします。
 
-�܂��i�K10�t�H���g�̔z�z�����ɏ]���A�I���W�i���̃t�H���g�ƃh�L�������g��
-�Y�t���܂��Bknj10-1.1�t�H���_�̃h�L�������g���Q�Ɖ������B
+またナガ10フォントの配布条件に従い、オリジナルのフォントとドキュメントを
+添付します。knj10-1.1フォルダのドキュメントも参照下さい。
 
-�Ĕz�z�ɂ��ẮA�{�\���̂܂܂ł���Ύ��R�Ƃ��܂��B
-�t�H���g�t�@�C���݂̂̔z�z�͋֎~���܂��B
+再配布については、本構成のままであれば自由とします。
+フォントファイルのみの配布は禁止します。
